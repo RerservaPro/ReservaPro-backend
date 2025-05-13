@@ -1,0 +1,51 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    networks:
+      - reservapro_network
+    depends_on:
+      - db
+    ports:
+      - "8082:8082"
+
+  db:
+    image: postgres:latest
+    container_name: reservapro_database
+    restart: always
+    tty: true
+    networks:
+      - reservapro_network
+    volumes:
+      - postgredb_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=sa
+      - POSTGRES_DB=testedb
+      - POSTGRES_USER=root
+    ports:
+      - "5432:5432"
+
+  admin:
+    image: dpage/pgadmin4:latest
+    container_name: reservapro_pgadmin
+    restart: always
+    volumes:
+      - pg_data:/var/lib/pgadmin
+    ports:
+      - "8002:80"
+    networks:
+      - reservapro_network
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@localhost.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - db
+
+volumes:
+  postgredb_data:
+  pg_data:
+
+networks:
+  reservapro_network:
+    driver: bridge

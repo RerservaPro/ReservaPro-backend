@@ -1,4 +1,13 @@
-FROM ubuntu:latest
-LABEL authors="gabrielgodoi"
+FROM openjdk:21-jdk-slim
 
-ENTRYPOINT ["top", "-b"]
+RUN apt-get update
+
+WORKDIR /app
+
+ARG JAR_FILE=target/*.jar
+
+COPY ${JAR_FILE} /app.jar
+
+COPY . .
+
+ENTRYPOINT ["java", "-jar", "/app.jar"]
