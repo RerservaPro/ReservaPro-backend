@@ -1,4 +1,4 @@
-package br.com.reservapro.reservapro;
+package br.com.reservapro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

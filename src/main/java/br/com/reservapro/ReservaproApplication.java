@@ -1,4 +1,4 @@
-package br.com.reservapro.reservapro;
+package br.com.reservapro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
