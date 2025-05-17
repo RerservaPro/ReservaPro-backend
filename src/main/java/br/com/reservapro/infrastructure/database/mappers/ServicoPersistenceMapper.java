@@ -4,8 +4,6 @@ import br.com.reservapro.domain.PaginaResponse;
 import br.com.reservapro.domain.servico.Servico;
 import br.com.reservapro.infrastructure.database.entities.servico.ServicoEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
 import java.util.Set;
@@ -14,13 +12,6 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface ServicoPersistenceMapper {
     ServicoEntity mapToEntity(Servico servico);
-    @Mappings({
-            @Mapping(target = "id", source = "id"),
-            @Mapping(target = "nome", source = "nome"),
-            @Mapping(target = "preco", source = "preco"),
-            @Mapping(target = "descricao", source = "descricao"),
-            @Mapping(target = "statusAtivacao", source = "statusAtivacao")
-    })
     Servico mapToDomain(ServicoEntity servicoEntity);
 
     default PaginaResponse<Servico> mapToPageResponseDomain(Page<ServicoEntity> paginaResponse) {
