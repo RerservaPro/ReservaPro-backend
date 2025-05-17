@@ -1,9 +1,9 @@
-package br.com.reservapro.resource.in.servico;
+package br.com.reservapro.controller.in.servico;
 
 import br.com.reservapro.application.servico.ServicoService;
-import br.com.reservapro.resource.in.PaginaResponseDTO;
-import br.com.reservapro.resource.in.servico.dto.ServicoDTO;
-import br.com.reservapro.resource.in.servico.mapper.ServicoWebMapper;
+import br.com.reservapro.controller.in.PaginaResponseDTO;
+import br.com.reservapro.controller.in.servico.dto.ServicoDTO;
+import br.com.reservapro.controller.in.servico.mapper.ServicoWebMapper;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servico")
 @RequiredArgsConstructor
-public class ServicoController {
+public class ServicoResource {
     private final ServicoService servicoService;
     private final ServicoWebMapper mapper;
 

@@ -1,4 +1,4 @@
-package br.com.reservapro.resource.in;
+package br.com.reservapro.controller.in;
 
 import java.time.Instant;
 

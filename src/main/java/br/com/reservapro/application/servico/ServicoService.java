@@ -10,14 +10,12 @@ import br.com.reservapro.infrastructure.database.entities.servico.ServicoEntity;
 import br.com.reservapro.infrastructure.database.mappers.ServicoPersistenceMapper;
 import br.com.reservapro.infrastructure.database.repositories.ServicoRepositoryImpl;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
 import java.time.Instant;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ServicoService {
@@ -32,7 +30,7 @@ public class ServicoService {
 
     public Servico procurarPorId(String id) {
         return mapper.mapToDomain(servicoRepository.findById(id).orElseThrow(
-                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR00003)
+                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         ));
     }
 
@@ -55,7 +53,7 @@ public class ServicoService {
 
     public Servico atualizar(String id, Servico servicoNovo) {
         ServicoEntity servicoRecuperado = servicoRepository.findById(id).orElseThrow(
-                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR00003)
+                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         );
         servicoRecuperado.setNome(servicoNovo.getNome() == null ? servicoRecuperado.getNome() : servicoNovo.getNome());
         servicoRecuperado.setPreco(servicoNovo.getPreco() == null ? servicoRecuperado.getPreco() : servicoNovo.getPreco());
@@ -71,7 +69,7 @@ public class ServicoService {
 
     public void desativar(String id) {
         ServicoEntity servico = servicoRepository.findById(id).orElseThrow(
-                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR00003)
+                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         );
         servico.getStatusAtivacao().setDataDesativacao(Instant.now());
         servico.getStatusAtivacao().setEstaAtivo(false);
@@ -80,7 +78,7 @@ public class ServicoService {
 
     public void deletar(String id) {
         ServicoEntity servico = servicoRepository.findById(id).orElseThrow(
-                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR00003)
+                () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         );
         servicoRepository.delete(servico);
     }

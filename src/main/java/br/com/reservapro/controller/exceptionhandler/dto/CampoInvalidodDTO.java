@@ -1,4 +1,4 @@
-package br.com.reservapro.resource.exceptionhandler.dto;
+package br.com.reservapro.controller.exceptionhandler.dto;
 
 import lombok.Builder;
 

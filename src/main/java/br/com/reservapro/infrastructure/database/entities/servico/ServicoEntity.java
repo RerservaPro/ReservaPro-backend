@@ -1,6 +1,5 @@
 package br.com.reservapro.infrastructure.database.entities.servico;
 
-import br.com.reservapro.domain.StatusAtivacao;
 import br.com.reservapro.infrastructure.database.entities.StatusAtivacaoEntity;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,10 +1,10 @@
-package br.com.reservapro.resource.exceptionhandler;
+package br.com.reservapro.controller.exceptionhandler;
 
 import br.com.reservapro.exception.RecursoNaoEncontradoException;
 import br.com.reservapro.exception.ViolacaoIntegridadeDadoException;
 import br.com.reservapro.exception.enums.RuntimeErroEnum;
-import br.com.reservapro.resource.exceptionhandler.dto.CampoInvalidodDTO;
-import br.com.reservapro.resource.exceptionhandler.dto.MensagemErroDTO;
+import br.com.reservapro.controller.exceptionhandler.dto.CampoInvalidodDTO;
+import br.com.reservapro.controller.exceptionhandler.dto.MensagemErroDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

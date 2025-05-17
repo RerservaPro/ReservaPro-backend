@@ -1,6 +1,6 @@
-package br.com.reservapro.resource.in.servico.dto;
+package br.com.reservapro.controller.in.servico.dto;
 
-import br.com.reservapro.resource.in.StatusAtivacaoDTO;
+import br.com.reservapro.controller.in.StatusAtivacaoDTO;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
