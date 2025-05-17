@@ -1,0 +1,14 @@
+package br.com.reservapro.resource.in;
+
+import java.util.Set;
+
+public record PaginaResponseDTO<T>(
+        long tamanhoPagina,
+        int totalElemento,
+        int totalPagina,
+        int paginaAtual,
+        int proximaPagina,
+        int paginaAnteiror,
+        Set<T> conteudo
+) {
+}
