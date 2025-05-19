@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+
+
+  db:
+    container_name: postgres-reserva-pro
+    image: "postgres:14.4-alpine"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "user_db" ]
+      timeout: 45s
+      interval: 10s
+      retries: 2
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: db-reserva-pro
+    ports:
+      - "5433:5432"
+
+  app:
+    image: "reservapro:latest"
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    build:
+      context: .
+    container_name: reservapro
+    environment:
+      - DB_USER=root
+      - DB_URL=jdbc:postgresql://db:5433/db-reserva-pro
+      - DB_PASSWORD=root
+      - JWT_SECRET=reservapro

@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/db-reserva-pro}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:reservaPro}
+
+#logging:
+#    level:
+#      org.springframework.boot: DEBUG
+#      org.springframework.context: DEBUG
+#      org.springframework.beans: DEBUG
+#      org.springframework.core: DEBUG
+#      org.springframework.web: DEBUG
+#      org.springframework.web.filter: DEBUG
+#      org.springframework.web.servlet: DEBUG
+#      org.springframework.web.servlet.mvc: DEBUG
+#      hibernate:
+#        ObjectNotFoundException: warn
+
+
