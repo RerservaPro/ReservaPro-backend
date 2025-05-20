@@ -1,6 +1,7 @@
 package br.com.reservapro.application.user;
 
 import br.com.reservapro.application.auth.JwtService;
+import br.com.reservapro.domain.StatusAtivacao;
 import br.com.reservapro.domain.User;
 import br.com.reservapro.exceptions.UnauthorizedException;
 import br.com.reservapro.exceptions.UnprocessableEntityException;
@@ -13,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,10 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new UnprocessableEntityException("User "+user.getEmail()+"Usuario já existe");
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        User newUser = new User(user.getName(), encryptedPassword, user.getRole(), user.getDocument(), user.getEmail(), true, new Date(), null);
+        User newUser = new User(user.getName(), encryptedPassword, user.getRole(), user.getDocument(), user.getEmail(), StatusAtivacao.builder()
+                .dataCriacao(Instant.now())
+                .estaAtivo(true)
+                .build());
          userRepository.save(newUser);
     }
 
@@ -51,8 +55,10 @@ public class UserService {
 
     public void delete(String userId) {
         User byId = findById(userId);
-        byId.setDeactivationDate(new Date());
-        byId.setEnabled(false);
+        byId.setStatusAtivacao(StatusAtivacao.builder()
+                .dataDesativacao(Instant.now())
+                .estaAtivo(false)
+                .build());
         userRepository.save(byId);
     }
 

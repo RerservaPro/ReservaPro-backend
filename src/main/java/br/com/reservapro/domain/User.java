@@ -38,14 +38,8 @@ public class User implements UserDetails {
     @Column(name = "`role`")
     private Role role;
 
-    @Column(name = "`enabled`")
-    private boolean enabled;
-
-    @Column(name = "`activation_date`")
-    private Date activationDate;
-
-    @Column(name = "`deactivation_date`")
-    private Date deactivationDate;
+    @Embedded
+    StatusAtivacao statusAtivacao;
 
     @Column(name = "`email`")
     private String email;
@@ -54,15 +48,13 @@ public class User implements UserDetails {
     private String avatar;
 
     public
-    User(String name, String password, Role role, String document, String email, boolean enabled, Date activationDate, Date deactivationDate) {
+    User(String name, String password, Role role, String document, String email,StatusAtivacao statusAtivacao ) {
         this.name = name;
         this.password = password;
         this.role = role;
         this.document = document;
         this.email = email;
-        this.enabled = enabled;
-        this.activationDate = activationDate;
-        this.deactivationDate = deactivationDate;
+        this.statusAtivacao = statusAtivacao;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -77,7 +69,7 @@ public class User implements UserDetails {
     }
 
     public boolean getEnabled(){
-        return this.enabled;
+        return this.statusAtivacao.isEstaAtivo();
     }
 
     @Override

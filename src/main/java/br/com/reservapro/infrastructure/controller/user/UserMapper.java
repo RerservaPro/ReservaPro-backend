@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
     public User mapToDomain(UserDTO userDTO) {
-        return new User(userDTO.name(), userDTO.password(),null, userDTO.cpfOuCnpj(), userDTO.email(), true, null, null);
+        return new User(userDTO.name(), userDTO.password(),null, userDTO.cpfOuCnpj(), userDTO.email(), null);
     }
 
     public UserProfileDTO mapToProfile(User user) {
