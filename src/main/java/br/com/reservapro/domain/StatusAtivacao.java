@@ -4,9 +4,9 @@ import lombok.*;
 
 import java.time.Instant;
 
-@Getter
-@Setter
+
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StatusAtivacao {
