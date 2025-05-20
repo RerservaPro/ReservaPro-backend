@@ -1,4 +1,4 @@
 package br.com.reservapro.infrastructure.database.repositories;
 
-public interface AgendamentoRepository {
+public interface NotificationRepository {
 }

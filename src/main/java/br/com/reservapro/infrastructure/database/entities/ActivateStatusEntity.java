@@ -12,11 +12,11 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class StatusAtivacaoEntity {
+public class ActivateStatusEntity {
     @Column(name = "data_criacao",nullable = false)
-    private Instant dataCriacao;
+    private Instant creationDate;
     @Column(name = "data_desativacao")
-    private Instant dataDesativacao;
+    private Instant deactivationDate;
     @Column(name = "esta_ativo", nullable = false)
-    private boolean estaAtivo;
+    private Boolean isActive;
 }

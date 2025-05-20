@@ -1,10 +1,10 @@
 package br.com.reservapro.controller.exceptionhandler;
 
-import br.com.reservapro.exception.RecursoNaoEncontradoException;
-import br.com.reservapro.exception.ViolacaoIntegridadeDadoException;
-import br.com.reservapro.exception.enums.RuntimeErroEnum;
-import br.com.reservapro.controller.exceptionhandler.dto.CampoInvalidodDTO;
-import br.com.reservapro.controller.exceptionhandler.dto.MensagemErroDTO;
+import br.com.reservapro.exception.ResourceNotFoundException;
+import br.com.reservapro.exception.DataIntegrityViolationException;
+import br.com.reservapro.exception.enums.RuntimeErrorEnum;
+import br.com.reservapro.controller.exceptionhandler.dto.InvalidFieldDTO;
+import br.com.reservapro.controller.exceptionhandler.dto.ErrorMessageDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,63 +20,47 @@ import java.util.List;
 public class ExceptionHandlerResource {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<MensagemErroDTO> argumentoMetodoNaoValido(MethodArgumentNotValidException excecao, HttpServletRequest request) {
-        RuntimeErroEnum erroEnum = RuntimeErroEnum.ERR0001;
-        List<CampoInvalidodDTO> campos = new ArrayList<>();
+    public ResponseEntity<ErrorMessageDTO> methodArgumentNotValid(MethodArgumentNotValidException exception, HttpServletRequest request) {
+        RuntimeErrorEnum runtimeErrorEnum = RuntimeErrorEnum.ERR0001;
+        List<InvalidFieldDTO> fields = new ArrayList<>();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        excecao.getBindingResult().getFieldErrors().forEach(campoInvalido -> {
-            CampoInvalidodDTO errorFieldDTO = CampoInvalidodDTO.builder()
-                    .nome(campoInvalido.getField())
-                    .descricao(campoInvalido.getDefaultMessage())
-                    .valor(String.valueOf(campoInvalido.getRejectedValue()))
+        exception.getBindingResult().getFieldErrors().forEach(invalidField -> {
+            InvalidFieldDTO errorFieldDTO = InvalidFieldDTO.builder()
+                    .name(invalidField.getField())
+                    .description(invalidField.getDefaultMessage())
+                    .value(String.valueOf(invalidField.getRejectedValue()))
                     .build();
 
-            campos.add(errorFieldDTO);
+            fields.add(errorFieldDTO);
         });
 
-        MensagemErroDTO errorMessageDTO = MensagemErroDTO.builder()
-                .codigo(erroEnum.getErro())
-                .status(httpStatus.value())
-                .mensagem(erroEnum.getDescricao())
-                .momento(Instant.now())
-                .caminho(request.getRequestURI())
-                .camposInvalidos(campos)
-                .build();
-
+        ErrorMessageDTO errorMessageDTO = createMessageDTO(runtimeErrorEnum, httpStatus, request, fields);
         return ResponseEntity.status(httpStatus).body(errorMessageDTO);
     }
 
-    @ExceptionHandler(RecursoNaoEncontradoException.class)
-    public ResponseEntity<MensagemErroDTO> RecursoNaoEncontrado(RecursoNaoEncontradoException excecao, HttpServletRequest request) {
-        RuntimeErroEnum runtimeErroEnum = excecao.getErro();
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorMessageDTO> resourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-
-        MensagemErroDTO mensagemErroDTO = MensagemErroDTO.builder()
-                .codigo(runtimeErroEnum.getErro())
-                .status(httpStatus.value())
-                .mensagem(runtimeErroEnum.getDescricao())
-                .momento(Instant.now())
-                .caminho(request.getRequestURI())
-                .build();
-
-        return ResponseEntity.status(httpStatus).body(mensagemErroDTO);
-    }
-
-    @ExceptionHandler(ViolacaoIntegridadeDadoException.class)
-    public ResponseEntity<MensagemErroDTO> violacaoIntegridadeDado(ViolacaoIntegridadeDadoException excecao, HttpServletRequest request) {
-        RuntimeErroEnum runtimeErrorEnum = excecao.getErro();
-        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-
-        MensagemErroDTO errorMessageDTO = MensagemErroDTO.builder()
-                .codigo(runtimeErrorEnum.getErro())
-                .status(httpStatus.value())
-                .mensagem(runtimeErrorEnum.getDescricao())
-                .momento(Instant.now())
-                .caminho(request.getRequestURI())
-                .build();
-
+        ErrorMessageDTO errorMessageDTO = createMessageDTO(exception.getError(), httpStatus, request, new ArrayList<>());
         return ResponseEntity.status(httpStatus).body(errorMessageDTO);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorMessageDTO> dataIntegrityViolation(DataIntegrityViolationException exception, HttpServletRequest request) {
+        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+        ErrorMessageDTO errorMessageDTO = createMessageDTO(exception.getError(), httpStatus, request, new ArrayList<>());
+        return ResponseEntity.status(httpStatus).body(errorMessageDTO);
+    }
+
+    private ErrorMessageDTO createMessageDTO(RuntimeErrorEnum runtimeErrorEnum, HttpStatus httpStatus, HttpServletRequest request, List<InvalidFieldDTO> fields) {
+        return ErrorMessageDTO.builder()
+                .code(runtimeErrorEnum.getError())
+                .status(httpStatus.value())
+                .message(runtimeErrorEnum.getDescription())
+                .moment(Instant.now())
+                .path(request.getRequestURI())
+                .invalidFields(fields)
+                .build();
+    }
 }

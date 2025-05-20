@@ -7,13 +7,14 @@ import java.time.Instant;
 import java.util.List;
 
 @Builder
-public record MensagemErroDTO(
-        String codigo,
+public record ErrorMessageDTO(
+        String code,
         int status,
-        String mensagem,
+        String message,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT-3")
-        Instant momento,
-        String caminho,
-        List<CampoInvalidodDTO> camposInvalidos
+        Instant moment,
+        String path,
+        List<InvalidFieldDTO> invalidFields
 ) {
+
 }
