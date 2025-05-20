@@ -8,7 +8,7 @@ import br.com.reservapro.exception.ViolacaoIntegridadeDadoException;
 import br.com.reservapro.exception.enums.RuntimeErroEnum;
 import br.com.reservapro.infrastructure.database.entities.servico.ServicoEntity;
 import br.com.reservapro.infrastructure.database.mappers.ServicoPersistenceMapper;
-import br.com.reservapro.infrastructure.database.repositories.ServicoRepositoryImpl;
+import br.com.reservapro.infrastructure.database.repositories.ServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ import java.time.Instant;
 @Service
 @RequiredArgsConstructor
 public class ServicoService {
-    private final ServicoRepositoryImpl servicoRepository;
+    private final ServicoRepository servicoRepository;
     private final ServicoPersistenceMapper mapper;
 
     public PaginaResponse<Servico> procurar(boolean estaAtivo, int pagina , int tamanhoPagina, String nome) {
         return mapper.mapToPageResponseDomain(
-                servicoRepository.findByPagination(estaAtivo, PageRequest.of(pagina, tamanhoPagina), nome == null ? "" : nome)
+                servicoRepository.findByEstaAtivoAndNomeContainingIgnoreCase(estaAtivo, nome == null ? "" : nome, PageRequest.of(pagina, tamanhoPagina))
         );
     }
 
