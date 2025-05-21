@@ -1,6 +1,7 @@
 package br.com.reservapro.domain;
 
 import br.com.reservapro.domain.enums.Role;
+import br.com.reservapro.domain.pagination.ActivateStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private Role role;
 
     @Embedded
-    StatusAtivacao statusAtivacao;
+    ActivateStatus statusAtivacao;
 
     @Column(name = "`email`")
     private String email;
@@ -48,7 +48,7 @@ public class User implements UserDetails {
     private String avatar;
 
     public
-    User(String name, String password, Role role, String document, String email,StatusAtivacao statusAtivacao ) {
+    User(String name, String password, Role role, String document, String email,ActivateStatus statusAtivacao ) {
         this.name = name;
         this.password = password;
         this.role = role;
@@ -69,7 +69,7 @@ public class User implements UserDetails {
     }
 
     public boolean getEnabled(){
-        return this.statusAtivacao.isEstaAtivo();
+        return this.statusAtivacao.getIsActive();
     }
 
     @Override

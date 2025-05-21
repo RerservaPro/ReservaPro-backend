@@ -3,7 +3,10 @@ package br.com.reservapro.infrastructure.controller.user.dto;
 
 import br.com.reservapro.domain.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
@@ -17,8 +20,8 @@ public record UserDTO ( @JsonProperty("name")
                        @Email(message = "it must be a well-formed email address")
                        String email,
                         @NotBlank(message = "document is mandatory")
-                        @CNPJ(groups = org.hibernate.validator.constraints.br.CNPJ.class)
-                        @CPF(groups = org.hibernate.validator.constraints.br.CPF.class)
+                        @CNPJ(groups = CNPJ.class)
+                        @CPF(groups = CPF.class)
                         String cpfOuCnpj,
                        @NotBlank(message = "Password is mandatory")
                        @Size(min = 8, max = 16, message = "Password size must be between 8 and 16")

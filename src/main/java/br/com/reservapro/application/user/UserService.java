@@ -1,10 +1,10 @@
 package br.com.reservapro.application.user;
 
 import br.com.reservapro.application.auth.JwtService;
-import br.com.reservapro.domain.StatusAtivacao;
 import br.com.reservapro.domain.User;
-import br.com.reservapro.exceptions.UnauthorizedException;
-import br.com.reservapro.exceptions.UnprocessableEntityException;
+import br.com.reservapro.domain.pagination.ActivateStatus;
+import br.com.reservapro.exception.UnauthorizedException;
+import br.com.reservapro.exception.UnprocessableEntityException;
 import br.com.reservapro.infrastructure.database.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
@@ -27,9 +27,9 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new UnprocessableEntityException("User "+user.getEmail()+"Usuario já existe");
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        User newUser = new User(user.getName(), encryptedPassword, user.getRole(), user.getDocument(), user.getEmail(), StatusAtivacao.builder()
-                .dataCriacao(Instant.now())
-                .estaAtivo(true)
+        User newUser = new User(user.getName(), encryptedPassword, user.getRole(), user.getDocument(), user.getEmail(), ActivateStatus.builder()
+                .creationDate(Instant.now())
+                .isActive(true)
                 .build());
          userRepository.save(newUser);
     }
@@ -55,9 +55,9 @@ public class UserService {
 
     public void delete(String userId) {
         User byId = findById(userId);
-        byId.setStatusAtivacao(StatusAtivacao.builder()
-                .dataDesativacao(Instant.now())
-                .estaAtivo(false)
+        byId.setStatusAtivacao(ActivateStatus.builder()
+                .deactivationDate(Instant.now())
+                .isActive(false)
                 .build());
         userRepository.save(byId);
     }

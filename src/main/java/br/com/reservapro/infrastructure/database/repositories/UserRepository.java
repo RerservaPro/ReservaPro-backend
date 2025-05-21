@@ -15,5 +15,4 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT u FROM User u WHERE u.enabled = true")
     Page<User> findAll (Pageable pageable);
 
-
 }
