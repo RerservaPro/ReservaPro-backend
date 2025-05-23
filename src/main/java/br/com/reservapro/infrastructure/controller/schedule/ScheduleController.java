@@ -1,6 +1,7 @@
 package br.com.reservapro.infrastructure.controller.schedule;
 
 import br.com.reservapro.application.schedule.SchedullingService;
+import br.com.reservapro.domain.Schedulling;
 import br.com.reservapro.infrastructure.controller.schedule.dto.SchedullingDto;
 import br.com.reservapro.infrastructure.controller.schedule.mapper.SchedullingWebMapper;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,8 +19,8 @@ public class ScheduleResource {
 
 
     @GetMapping
-    public ResponseEntity<List<SchedullingDto>> findAll() {
-
+    public ResponseEntity<List<Schedulling>> findAll() {
+        return ResponseEntity.ok().body(this.schedullingService.findAll());
     }
 
     @PostMapping
