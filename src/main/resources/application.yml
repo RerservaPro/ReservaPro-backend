@@ -4,13 +4,25 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER:root}
     password: ${DB_PASSWORD:root}
-
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: reservaproautoatendimento@gmail.com
+    password: efdo bqaw aezd sncz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
 
 api:
   security:
