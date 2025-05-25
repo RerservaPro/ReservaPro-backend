@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/service")
 @RequiredArgsConstructor
-public class ServiceTypeResource {
+public class ServiceTypeControllerImpl implements ServiceTypeController {
     private final ServiceTypeService serviceTypeService;
     private final ServiceTypeWebMapper mapper;
 
+    @Override
     @GetMapping("/search")
     public ResponseEntity<PageResponseDTO<ServiceTypeDTO>> search(
             @RequestParam(name = "isActive", defaultValue = "true", required = false)
@@ -38,6 +39,7 @@ public class ServiceTypeResource {
         );
     }
 
+    @Override
     @GetMapping("/findbyid/{id}")
     public ResponseEntity<ServiceTypeDTO> findById(@PathVariable String id) {
         return ResponseEntity.ok().body(
@@ -45,14 +47,15 @@ public class ServiceTypeResource {
         );
     }
 
+    @Override
     @PostMapping("/insert")
     public ResponseEntity<ServiceTypeDTO> insert(@Validated(ServiceTypeDTO.OnCreate.class) @RequestBody ServiceTypeDTO serviceTypeDTO) {
-        ServiceType x = mapper.mapToDomain(serviceTypeDTO);
-        ServiceType y = serviceTypeService.insert(x);
-        ServiceTypeDTO z = mapper.mapToDTO(y);;
-        return ResponseEntity.status(HttpStatus.CREATED).body(z);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                mapper.mapToDTO(serviceTypeService.insert(mapper.mapToDomain(serviceTypeDTO)))
+        );
     }
 
+    @Override
     @PutMapping("/update/{id}")
     public ResponseEntity<ServiceTypeDTO> update(@PathVariable String id, @Validated(ServiceTypeDTO.OnUpdate.class) @RequestBody ServiceTypeDTO serviceTypeDTO) {
         return ResponseEntity.ok().body(
@@ -60,12 +63,14 @@ public class ServiceTypeResource {
         );
     }
 
+    @Override
     @DeleteMapping("/deactivate/{id}")
     public ResponseEntity<Void> deactivate(@PathVariable String id) {
         serviceTypeService.deactivate(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Override
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         serviceTypeService.delete(id);

@@ -43,6 +43,15 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/user/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/user/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui", "/swagger-ui/**", "/v3/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/service/search", "/service/findbyid/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/service/insert").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/service/update/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/service/deactivate/**", "/service/delete/**").permitAll()
+
+
+                        .requestMatchers(HttpMethod.POST, "/email/send").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona filtro de segurança
