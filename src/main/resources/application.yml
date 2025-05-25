@@ -29,5 +29,6 @@ api:
 #      org.springframework.web.servlet.mvc: DEBUG
 #      hibernate:
 #        ObjectNotFoundException: warn
-
+server:
+  port: ${PORT:8080}
 

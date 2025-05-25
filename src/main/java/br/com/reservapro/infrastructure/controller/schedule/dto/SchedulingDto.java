@@ -4,10 +4,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
-public record SchedullingDto(
-        Integer id,
-        @NotNull(groups = {OnCreate.class}, message = "A data do agendamento é obrigatória.")
-        Date schedullingDate
+public record SchedulingDto(
+        String id,
+        @NotNull(groups = {OnCreate.class}, message = "Schedule date is required")
+        Date schedulingDate
 ) {
     public interface OnCreate {
     }

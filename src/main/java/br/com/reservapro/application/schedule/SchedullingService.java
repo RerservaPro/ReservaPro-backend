@@ -3,9 +3,9 @@ package br.com.reservapro.application.schedule;
 import br.com.reservapro.domain.Schedulling;
 import br.com.reservapro.exceptions.RecursoNaoEncontradoException;
 import br.com.reservapro.exceptions.enums.RuntimeErroEnum;
-import br.com.reservapro.infrastructure.database.entities.schedule.SchedullingEntity;
+import br.com.reservapro.infrastructure.database.entities.schedule.SchedulingEntity;
 import br.com.reservapro.infrastructure.database.mappers.SchedulePersistenceMapper;
-import br.com.reservapro.infrastructure.database.repositories.SchedullingRepositoryImpl;
+import br.com.reservapro.infrastructure.database.repositories.SchedulingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.AlreadyBuiltException;
 import org.springframework.stereotype.Service;
@@ -16,53 +16,52 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SchedullingService {
-    private SchedullingRepositoryImpl schedullingRepository;
-    private SchedulePersistenceMapper mapper;
+    private final SchedulingRepository schedulingRepository;
+    private final SchedulePersistenceMapper mapper;
 
     public List<Schedulling> findAll() {
-        return this.schedullingRepository.findAll()
+        return this.schedulingRepository.findAll()
                 .stream()
-                .map(s -> this.mapper.mapToDomain(s))
+                .map(this.mapper::mapToDomain)
                 .collect(Collectors.toList());
     }
 
     public Schedulling findById(String id) {
-        return this.mapper.mapToDomain(this.schedullingRepository.findById(id).orElseThrow(
+        return this.mapper.mapToDomain(this.schedulingRepository.findById(id).orElseThrow(
                 () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         ));
     }
 
     public Schedulling create(Schedulling schedulling) {
-        SchedullingEntity schedullingEntity = this.schedullingRepository.save(this.mapper.mapToEntity(schedulling));
-        return this.mapper.mapToDomain(schedullingEntity);
+        SchedulingEntity schedulingEntity = this.schedulingRepository.save(this.mapper.mapToEntity(schedulling));
+        return this.mapper.mapToDomain(schedulingEntity);
     }
 
 
     public Schedulling update(String id, Schedulling schedulling) {
-        SchedullingEntity recoveredData = this.schedullingRepository.findById(id).orElseThrow(
+        SchedulingEntity recoveredData = this.schedulingRepository.findById(id).orElseThrow(
                 () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         );
-
         if (recoveredData.getSchedullingDay() != null &&
                 recoveredData.getSchedullingDay().equals(schedulling.getSchedullingDate())) {
             throw new AlreadyBuiltException("Agendamento já existente para esta data.");
         }
         recoveredData.setSchedullingDay(schedulling.getSchedullingDate());
-        return this.mapper.mapToDomain(this.schedullingRepository.save(recoveredData));
+        return this.mapper.mapToDomain(this.schedulingRepository.save(recoveredData));
     }
 
     public void delete(String id) {
-        this.schedullingRepository.findById(id).orElseThrow(
+        this.schedulingRepository.findById(id).orElseThrow(
                 () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         );
-        this.schedullingRepository.deleteById(id);
+        this.schedulingRepository.deleteById(id);
     }
 
     public void deleteMany(List<String> ids) {
-        ids.forEach(id -> this.schedullingRepository.findById(id).orElseThrow(
+        ids.forEach(id -> this.schedulingRepository.findById(id).orElseThrow(
                 () -> new RecursoNaoEncontradoException(RuntimeErroEnum.ERR0003)
         ));
 
-        this.schedullingRepository.deleteAllById(ids);
+        this.schedulingRepository.deleteAllById(ids);
     }
 }

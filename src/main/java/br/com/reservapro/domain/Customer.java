@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Costumer {
+public class Customer {
     @EqualsAndHashCode.Include
     private String id;
     private String email;

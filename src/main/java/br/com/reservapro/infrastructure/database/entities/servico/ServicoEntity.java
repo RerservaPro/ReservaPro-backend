@@ -1,6 +1,7 @@
 package br.com.reservapro.infrastructure.database.entities.servico;
 
 import br.com.reservapro.infrastructure.database.entities.StatusAtivacaoEntity;
+import br.com.reservapro.infrastructure.database.entities.costumer.CustomerEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +28,8 @@ public class ServicoEntity {
     private String descricao;
     @Embedded
     private StatusAtivacaoEntity statusAtivacao;
+
+    @ManyToOne
+    @JoinColumn(name = "customerId", referencedColumnName = "id")
+    private CustomerEntity customer;
 }
